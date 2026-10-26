@@ -1,202 +1,86 @@
 # ref-based-fed
 
-A proof of concept for **Git federation with local-first authority** using **Git refs**, **Git bundles**, and **NATS**.
+### Git federation for sites that need to work together—and keep working apart.
 
-This project explores a simple federation model for multiple sites where:
+`ref-based-fed` is an experimental federation agent that lets independent sites exchange Git changes while each site keeps authority over its own repository. It uses Git refs and bundles for change transfer, and NATS for discovery and event notifications.
 
-- each site owns its own authoritative repository state
-- remote sites keep awareness copies of other sites
-- remote sites can propose changes to other sites
-- the owning site accepts or rejects those proposals
-- accepted changes are announced so other sites can fetch and synchronize
+**Local authority. Disconnected-friendly workflows. No central Git host required.**
 
-The goal is to support **DDIL-friendly**, **no-quorum**, **no-master/slave** federation using mostly standard Git behavior.
+> **Status: proof of concept.** The project is actively exploring the federation workflow; expect rough edges and evolving behavior.
 
----
+## How it works
 
-## Why this exists
+```mermaid
+flowchart LR
+    A[Site A owns repo A] -->|advertises and publishes updates| N[(NATS events)]
+    N -->|peers discover updates| B[Site B tracks repo A]
+    B -->|fetch refs / review proposal| A
+    A -->|accept or reject locally| A
+```
 
-Traditional Git hosting and replication patterns often assume one of these:
-
-- a primary/secondary relationship
-- a single canonical upstream
-- continuous connectivity
-- centralized forge workflows
-
-This project is aimed at a different model:
-
-- **local-first authority**
-- **site autonomy**
-- **operation while isolated**
-- **awareness of remote differences**
-- **proposal-based cross-site collaboration**
-
-In this design, a site is authoritative for its own repository, while other sites may track it, inspect it, and propose changes to it.
-
----
-
-## Core ideas
-
-### 1. Local-first authority
-
-Each site owns its own repo.
-
-Example:
-
-- Site 1 is authoritative for `repo/1`
-- Site 2 is authoritative for `repo/2`
-- Site 3 is authoritative for `repo/3`
-
-Other sites may keep remote copies of those repos, but they do not override the owning site.
-
-### 2. Git refs as federation state
-
-Instead of requiring a full forge from the start, this POC models federation with Git refs.
-
-Examples:
-
-- authoritative refs
-- published refs
-- tracking refs
-- inbox/proposal refs
-
-This makes it possible to separate:
-
-- accepted local state
-- remote observed state
-- inbound proposals
-
-### 3. NATS for signaling
-
-NATS is used as the event bus for federation notifications.
-
-Typical events include:
-
-- proposal created
-- proposal received
-- proposal accepted
-- proposal rejected
-- site sync available
-
-NATS is not intended to be the source of truth for Git content. Git remains the source of truth.
-
-### 4. Git bundles for disconnected proposal transfer
-
-For DDIL and intermittently connected scenarios, remote proposal changes can be packaged as a Git bundle and transferred to the owning site.
-
-The owning site can then:
-
-- verify the bundle
-- import it into an inbox ref
-- review it
-- accept or reject it
-
-### 5. Fetch for synchronization
-
-When a site accepts a change into its authoritative branch, other sites can fetch that updated ref after receiving a federation event.
-
----
-
-## Target user stories
-
-### User story 1: site changes its own repo
-
-- Site 1 creates a local change in `repo/1`
-- Site 1 reviews and approves the change
-- Site 1 merges the change into its authoritative branch
-- Site 1 publishes a NATS notification
-- Other sites fetch the accepted change from Site 1
-
-### User story 2: remote site proposes change to another site
-
-- Site 2 checks out its copy of `repo/1`
-- Site 2 makes changes intended for Site 1
-- Site 2 creates a Git bundle containing the proposal branch
-- Site 2 sends proposal metadata over NATS
-- Site 1 receives and imports the proposal into an inbox ref
-- Site 1 reviews and accepts or rejects the proposal
-- If accepted, Site 1 merges it into its authoritative branch
-- Site 1 notifies other sites via NATS
-- Other sites fetch the accepted update
-
----
-
-## What this project is not
-
-At this stage, this project is **not** trying to be:
-
-- a full forge
-- a replacement for GitHub/GitLab/Forgejo
-- a globally writable multi-master branch system
-- a quorum-based distributed consensus system
-
-This is a **federation workflow POC**, focused on:
-
-- refs
-- bundles
-- synchronization
-- proposals
-- local authority
-
----
-
-## Current direction
-
-The current implementation direction is:
-
-- **Rust** for the agent and workflow logic
-- standard **Git** behavior for repository operations
-- **NATS** for event distribution
-- proposal/import/accept flows built around refs and bundles
-
-The initial focus is to prove the federation mechanics first, before introducing a forge or UI.
-
----
-
-## Planned repository layout
+Each site owns and updates its authoritative repository. Peers can follow that site, fetch published refs, and submit proposals. The owner reviews incoming changes and decides whether to accept them; accepted changes can then be announced for peers to fetch. Git stores the repository content and refs. NATS carries the coordination messages.
 
 ```text
-src/
-  git/
-    mod.rs
-    core.rs
-docs/
-  federation-flow.md
-Cargo.toml
+peer change ──> proposal ref ──> owner review ──> accept/reject
+                                      │
+                         accepted update announced to peers
 ```
 
-## Frontend
+## Why refs?
 
-The proposal review UI lives in `frontend/`.
+Federation state can be represented with ordinary Git refs: published state, remote tracking state, and proposal/inbox state stay distinct. Git bundles can carry proposal history when sites cannot connect continuously. This keeps the model close to standard Git while allowing each site to operate independently.
 
-Run the Axum server on its default port, then start the frontend:
+The project explores a **DDIL-friendly** (disconnected, intermittent, and limited connectivity) workflow without quorum or a single master site. It is not a multi-writer shared branch: authority stays with the repository's owning site.
+
+## Try the local multi-site demo
+
+The Makefile provides a local lab with multiple Gitea sites, the Rust federation agents, and a proposal review UI. You’ll need Rust with Cargo, Docker Compose, Node.js/npm, and GNU Make.
 
 ```bash
-cd frontend
-npm install
-npm run dev
+make demo
 ```
 
-Vite serves the React app at `http://127.0.0.1:5173` and proxies `/api` requests to `http://127.0.0.1:8081`.
-
-To point the UI at a different Axum server port:
+This recreates the demo environment and starts the sites and UIs. Open the site UIs at `http://127.0.0.1:5173` onward (one port per site). To stop the demo and remove its environment and logs:
 
 ```bash
-cd frontend
-npm run dev -- --api-port=8082
-npm run build -- --api-port=8082
+make demo-down
 ```
 
-You can also use environment variables:
+For manual control, start the lab, then run a site agent and its UI in separate terminals:
 
 ```bash
-VITE_API_PORT=8083 npm run dev
-VITE_API_PORT=8083 npm run build
-VITE_API_BASE_URL=http://127.0.0.1:8083 npm run build
+make up
+make site1
+make ui1
 ```
 
-## Additional docs
+The site agent API defaults to port `8081`; the UI uses port `5173` and proxies API requests to the agent. Site-specific targets include `make site2`, `make ui2`, and `make farewell2`. Run `make help` to see available targets. Demo credentials and port settings can be adjusted through Make variables; see the [Makefile](Makefile).
 
-- `docs/federation-flow.md` describes the broader federation workflow
-- `docs/following.md` describes the `.federation/following` policy file and how
-  it affects advertisements, updates, and remote reconciliation
+## Follow policy
+
+Each managed repository can use `.federation/following` to control which sites it follows. A missing file defaults to following all sites; an empty file follows none. Add one site name per line to choose specific peers. A matching advertisement supplies the repository URL needed to add a remote.
+
+See [Following Remote Sites](docs/following.md) for the full rules and behavior.
+
+## Project boundaries
+
+This is a federation workflow POC, not a forge or a replacement for GitHub, GitLab, or Forgejo. It does not implement a globally writable multi-master branch or distributed consensus. The demo uses Gitea instances to provide familiar repository and review interfaces.
+
+## Documentation
+
+- [Federation flow](docs/federation-flow.md) — publishing, peer synchronization, and proposal workflows
+- [Following remote sites](docs/following.md) — `.federation/following` policy and remote reconciliation
+- [Farewell demo](docs/demos/farewell.md) — demonstrate a site leaving and rejoining the lab
+- [Post-push payload example](docs/post-push-payload-example.json) — sample webhook payload consumed by the agent
+
+## Built with
+
+- **Rust** for the federation agent and HTTP API
+- **Git** refs and bundles for repository state and change transfer
+- **NATS** for federation events
+- **React + Vite** for the proposal review UI
+- **Gitea** for the local multi-site demo
+
+---
+
+Contributions, experiments, and feedback are welcome. Start with the [federation flow](docs/federation-flow.md) to understand the model, then try the local demo.
