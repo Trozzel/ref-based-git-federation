@@ -1,0 +1,5 @@
+# Control how imports are grouped and ordered.
+imports_granularity = "Module"
+group_imports = "StdExternalCrate"
+reorder_imports = true
+

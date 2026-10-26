@@ -1,0 +1,6 @@
+/target
+/frontend/node_modules
+/frontend/dist
+/automation/docker-compose.generated.yaml
+/logs
+.DS_Store

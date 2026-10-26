@@ -1,0 +1,28 @@
+[package]
+name = "ref-based-fed-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+async-nats = "0.45.0"
+axum = "0.8.9"
+libfuzzer-sys = "0.4"
+tokio = "1.52.1"
+tower = "0.5.3"
+
+# Force static linking of OpenSSL to avoid system dependency issues.
+# The `vendored` feature builds and links its own copy of OpenSSL.
+openssl = { version = "0.10", features = ["vendored"] }
+
+[dependencies.ref-based-fed]
+path = ".."
+
+[[bin]]
+name = "http_endpoints"
+path = "fuzz_targets/http_endpoints.rs"
+test = false
+doc = false

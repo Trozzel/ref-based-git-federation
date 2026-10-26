@@ -1,0 +1,261 @@
+{
+  "after": "9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+  "before": "0000000000000000000000000000000000000000",
+  "commits": [
+    {
+      "added": [],
+      "author": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "committer": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "id": "9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+      "message": "site-2 appended webhook.results\n",
+      "modified": [
+        "webhook.results"
+      ],
+      "removed": [],
+      "timestamp": "2026-04-15T15:59:52-04:00",
+      "url": "http://localhost:30002/fed-git/site-2/commit/9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+      "verification": null
+    },
+    {
+      "added": [],
+      "author": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "committer": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "id": "24751e938b700a1b49c0924e2575eab20b1458cb",
+      "message": "updated webhook.results\n",
+      "modified": [
+        "webhook.results"
+      ],
+      "removed": [],
+      "timestamp": "2026-04-15T15:54:25-04:00",
+      "url": "http://localhost:30002/fed-git/site-2/commit/24751e938b700a1b49c0924e2575eab20b1458cb",
+      "verification": null
+    },
+    {
+      "added": [
+        "webhook.results"
+      ],
+      "author": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "committer": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "id": "58bc1ed0ce25ed4e68f26bbc74c6a92528d98abc",
+      "message": "site-1 added webhook.results\n",
+      "modified": [],
+      "removed": [],
+      "timestamp": "2026-04-15T15:25:57-04:00",
+      "url": "http://localhost:30002/fed-git/site-2/commit/58bc1ed0ce25ed4e68f26bbc74c6a92528d98abc",
+      "verification": null
+    },
+    {
+      "added": [
+        "stats.txt"
+      ],
+      "author": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "committer": {
+        "email": "person@example.com",
+        "name": "Bob Jones",
+        "username": ""
+      },
+      "id": "78bda7a7f8d29c7d387c344f55253b75a3e5fe5e",
+      "message": "first commit\n",
+      "modified": [],
+      "removed": [],
+      "timestamp": "2026-04-15T13:28:59-04:00",
+      "url": "http://localhost:30002/fed-git/site-2/commit/78bda7a7f8d29c7d387c344f55253b75a3e5fe5e",
+      "verification": null
+    }
+  ],
+  "compare_url": "http://localhost:30002/fed-git/site-2/compare/main...9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+  "head_commit": {
+    "added": [],
+    "author": {
+      "email": "person@example.com",
+      "name": "Bob Jones",
+      "username": ""
+    },
+    "committer": {
+      "email": "person@example.com",
+      "name": "Bob Jones",
+      "username": ""
+    },
+    "id": "9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+    "message": "site-2 appended webhook.results\n",
+    "modified": [
+      "webhook.results"
+    ],
+    "removed": [],
+    "timestamp": "2026-04-15T15:59:52-04:00",
+    "url": "http://localhost:30002/fed-git/site-2/commit/9771af3fd0ffe71b73ecade03b0b5d61e1aa517a",
+    "verification": null
+  },
+  "pusher": {
+    "active": false,
+    "avatar_url": "http://localhost:30002/avatars/93942e96f5acd83e2e047ad8fe03114d",
+    "created": "2026-04-15T17:28:56Z",
+    "description": "",
+    "email": "fed-git@noreply.localhost",
+    "followers_count": 0,
+    "following_count": 0,
+    "full_name": "",
+    "html_url": "http://localhost:30002/fed-git",
+    "id": 1,
+    "is_admin": false,
+    "language": "",
+    "last_login": "0001-01-01T00:00:00Z",
+    "location": "",
+    "login": "fed-git",
+    "login_name": "",
+    "prohibit_login": false,
+    "restricted": false,
+    "source_id": 0,
+    "starred_repos_count": 0,
+    "username": "fed-git",
+    "visibility": "public",
+    "website": ""
+  },
+  "ref": "refs/heads/proposals/site-1/00003",
+  "repository": {
+    "allow_fast_forward_only_merge": true,
+    "allow_merge_commits": true,
+    "allow_rebase": true,
+    "allow_rebase_explicit": true,
+    "allow_rebase_update": true,
+    "allow_squash_merge": true,
+    "archived": false,
+    "archived_at": "1970-01-01T00:00:00Z",
+    "avatar_url": "",
+    "clone_url": "http://localhost:30002/fed-git/site-2.git",
+    "created_at": "2026-04-15T17:28:59Z",
+    "default_allow_maintainer_edit": false,
+    "default_branch": "main",
+    "default_delete_branch_after_merge": false,
+    "default_merge_style": "merge",
+    "description": "",
+    "empty": false,
+    "fork": false,
+    "forks_count": 0,
+    "full_name": "fed-git/site-2",
+    "has_actions": true,
+    "has_issues": true,
+    "has_packages": true,
+    "has_projects": true,
+    "has_pull_requests": true,
+    "has_releases": true,
+    "has_wiki": true,
+    "html_url": "http://localhost:30002/fed-git/site-2",
+    "id": 1,
+    "ignore_whitespace_conflicts": false,
+    "internal": false,
+    "internal_tracker": {
+      "allow_only_contributors_to_track_time": true,
+      "enable_issue_dependencies": true,
+      "enable_time_tracker": true
+    },
+    "language": "",
+    "languages_url": "http://localhost:30002/api/v1/repos/fed-git/site-2/languages",
+    "link": "",
+    "mirror": false,
+    "mirror_interval": "",
+    "mirror_updated": "0001-01-01T00:00:00Z",
+    "name": "site-2",
+    "object_format_name": "sha1",
+    "open_issues_count": 0,
+    "open_pr_counter": 0,
+    "original_url": "",
+    "owner": {
+      "active": false,
+      "avatar_url": "http://localhost:30002/avatars/93942e96f5acd83e2e047ad8fe03114d",
+      "created": "2026-04-15T17:28:56Z",
+      "description": "",
+      "email": "test@email.com",
+      "followers_count": 0,
+      "following_count": 0,
+      "full_name": "",
+      "html_url": "http://localhost:30002/fed-git",
+      "id": 1,
+      "is_admin": false,
+      "language": "",
+      "last_login": "0001-01-01T00:00:00Z",
+      "location": "",
+      "login": "fed-git",
+      "login_name": "",
+      "prohibit_login": false,
+      "restricted": false,
+      "source_id": 0,
+      "starred_repos_count": 0,
+      "username": "fed-git",
+      "visibility": "public",
+      "website": ""
+    },
+    "parent": null,
+    "permissions": {
+      "admin": true,
+      "pull": true,
+      "push": true
+    },
+    "private": false,
+    "projects_mode": "all",
+    "release_counter": 0,
+    "repo_transfer": null,
+    "size": 26,
+    "ssh_url": "git@gitea-2:fed-git/site-2.git",
+    "stars_count": 0,
+    "template": false,
+    "updated_at": "2026-04-15T17:41:39Z",
+    "url": "http://localhost:30002/api/v1/repos/fed-git/site-2",
+    "watchers_count": 1,
+    "website": ""
+  },
+  "sender": {
+    "active": false,
+    "avatar_url": "http://localhost:30002/avatars/93942e96f5acd83e2e047ad8fe03114d",
+    "created": "2026-04-15T17:28:56Z",
+    "description": "",
+    "email": "fed-git@noreply.localhost",
+    "followers_count": 0,
+    "following_count": 0,
+    "full_name": "",
+    "html_url": "http://localhost:30002/fed-git",
+    "id": 1,
+    "is_admin": false,
+    "language": "",
+    "last_login": "0001-01-01T00:00:00Z",
+    "location": "",
+    "login": "fed-git",
+    "login_name": "",
+    "prohibit_login": false,
+    "restricted": false,
+    "source_id": 0,
+    "starred_repos_count": 0,
+    "username": "fed-git",
+    "visibility": "public",
+    "website": ""
+  },
+  "total_commits": 4
+}

@@ -1,0 +1,80 @@
+<mxfile host="app.diagrams.net" modified="2026-04-06T12:00:00.000Z" agent="OpenAI" version="24.7.17">
+  <diagram id="federationFlow" name="Federation Flow">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="siteA" value="Publishing Site (Site A)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#e8f0fe;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="360" height="280" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="local" value="1. Local change&#xa;received or created" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="80" y="130" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="commit" value="2. Commit&#xa;change" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="220" y="130" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="publish" value="3. Update site-owned&#xa;published ref&#xa;refs/heads/site-a/published" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="140" y="230" width="170" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="nats" value="4. Announce event on NATS&#xa;origin_site, repo, ref, commit" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#f29900;fillColor=#fff4e5;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="170" width="250" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="gitfetch" value="5. Peers fetch published ref&#xa;from Site A Git / Gitea" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#e8f0fe;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="790" y="170" width="240" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="siteB" value="Receiving Site (Site B)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#34a853;fillColor=#e6f4ea;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="70" width="430" height="320" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="inbox" value="6. Import into&#xa;tracking / inbox ref" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#34a853;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="130" width="130" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="validate" value="7. Validate&#xa;trust, base, policy, schema" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#f29900;fillColor=#fff4e5;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="130" width="150" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="decision" value="8. Promote&#xa;locally?" style="rhombus;whiteSpace=wrap;html=1;strokeColor=#9334e6;fillColor=#f3e8fd;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="125" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="promote" value="9a. Promote to&#xa;integration / active branch" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#34a853;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="260" width="150" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="hold" value="9b. Keep in inbox /&#xa;catch-up / reject" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ea4335;fillColor=#fce8e6;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="260" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" edge="1" parent="1" source="local" target="commit" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="commit" target="publish" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="publish" target="nats" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="nats" target="gitfetch" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="gitfetch" target="inbox" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="inbox" target="validate" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="validate" target="decision" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" value="yes" edge="1" parent="1" source="decision" target="promote" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" value="no" edge="1" parent="1" source="decision" target="hold" style="endArrow=block;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
